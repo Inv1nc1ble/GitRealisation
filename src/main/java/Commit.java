@@ -6,17 +6,15 @@ public class Commit {
 
     private final String authorName;
     private final Date date;
-    private String email;
-
-    private static List<Commit> commitList = new ArrayList();
-
     private Commit parentCommit;
     private Tree parentTree;
 
-    public Commit(String authorName, Date date, String email) {
+    private static List<Commit> commitList;
+
+    public Commit(String authorName) {
+        commitList = new ArrayList();
         this.authorName = authorName;
         this.date = new Date();
-        this.email = email;
         commitID = commitList.size();
 
         if (!commitList.isEmpty()){
@@ -33,9 +31,29 @@ public class Commit {
         return parentTree;
     }
 
+    public Commit getParentCommit() {
+        return parentCommit;
+    }
+
     public void addTree(String name) {
         Tree tree = new Tree(name);
         tree.setParentCommit(this);
         this.parentTree = tree;
+    }
+
+    public int getCommitID() {
+        return commitID;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if ((obj == null) || (getClass() != obj.getClass())) return false;
+        Commit commit = (Commit) obj;
+        return Objects.equals(commitID, commit.commitID) &&
+                Objects.equals(date, commit.date) &&
+                Objects.equals(authorName, commit.authorName) &&
+                Objects.equals(parentCommit, commit.parentCommit) &&
+                Objects.equals(parentTree, commit.parentTree);
     }
 }
